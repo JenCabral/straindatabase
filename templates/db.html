@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<style scoped type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#bbb;}
+.tg td{font-family:Arial, sans-serif;font-size:10px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#bbb;color:#594F4F;background-color:#E0FFEB;border-top-width:1px;border-bottom-width:1px;  }
+.tg th{font-family:Arial, sans-serif;font-size:17px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#bbb;color:#493F3F;background-color:#9DE0AD;border-top-width:1px;border-bottom-width:1px;}
+.tg .tg-rmb8{background-color:#C2FFD6;vertical-align:top}
+.tg .tg-yw4l{vertical-align:top}
+@media screen and (max-width: 767px) {.tg {width: auto !important;}.tg col {width: auto !important;}.tg-wrap {overflow-x: auto;-webkit-overflow-scrolling: touch;}}
+</style>
+<div class="tg-wrap"><table class="tg">
+  <tr>
+    <th class="tg-yw4l">StrainID</th>
+    <th class="tg-yw4l">Genus</th>
+    <th class="tg-yw4l">Species</th>
+    <th class="tg-yw4l">Subspecies</th>
+    <th class="tg-yw4l">DSMZ</th>
+    <th class="tg-yw4l">ATCC</th>
+    <th class="tg-yw4l">NRRL</th>
+    <th class="tg-yw4l">Strain</th>
+    <th class="tg-yw4l">Freezer Location #1</th>
+    <th class="tg-yw4l">Freezer Location #2</th>
+    <th class="tg-yw4l">Freezer Location #3</th>
+    <th class="tg-yw4l">Freezer Location #4</th>
+    <th class="tg-yw4l">Freezer Location #5</th>
+    <th class="tg-yw4l">Freezer Location #6</th>
+  </tr>
+  {% for data in database %}
+  <tr contenteditable="true">
+    <td class="tg-rmb8">{{data[0]}}</td>
+    <td class="tg-rmb8">{{data[1]}}</td>
+    <td class="tg-rmb8">{{data[2]}}</td>
+    <td class="tg-rmb8"></td>
+    <td class="tg-rmb8"></td>
+    <td class="tg-rmb8"></td>
+    <td class="tg-rmb8"></td>
+    <td class="tg-rmb8">{{data[3]}}</td>
+    <td class="tg-rmb8"></td>
+    <td class="tg-rmb8"></td>
+    <td class="tg-rmb8"></td>
+    <td class="tg-rmb8"></td>
+    <td class="tg-rmb8"></td>
+    <td class="tg-rmb8"></td>
+  </tr>
+  {% endfor %}
+</table></div>
+ 
+{% endblock %}
