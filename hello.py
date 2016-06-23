@@ -3,6 +3,7 @@ from flask import request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
 from flaskext.mysql import MySQL
+import json
 
 app = Flask(__name__, static_url_path='/static')
 mysql = MySQL()
@@ -19,7 +20,9 @@ def hello():
     cursor.execute("SELECT * from Strains")
     # return "RUNNING"
     database = cursor.fetchall()
-    # print(database)
+    
+    json_string = json.dumps(database)
+    print(database)
     return render_template('editable.html', database=database)
 
 

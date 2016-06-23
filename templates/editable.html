@@ -56,13 +56,24 @@
 				editableGrid.attachToHTMLTable('htmlgrid');
 				editableGrid.renderGrid();
 			} 
+			var searchField = document.getElementById('searchField');
+			searchField.addEventListener(
+			    'keyup',
+			    function (){
+			        editableGrid.filter(searchField.value);
+			        editableGrid.renderGrid();
+			    }
+			);
 		</script>
 		
 	</head>
 	
 	<body>
 		<h1>Magarvey Lab Strain Inventory</h1>
-
+		<form action="">
+			<input type="text" id="searchField"/>
+        	<input type="button" value="filter" onclick='editableGrid.filter(document.getElementByID('filtervalue').value);'/>
+   	 	</form> 
 		<table id="htmlgrid" class="testgrid">
 			<tr>
 				<th>StrainID</th>
@@ -102,14 +113,14 @@
 			    <td  style=" text-align: center; " class="editablegrid-action" data-title="action">
 			    	<a onclick="if (confirm('Are you sure you want to delete this person ? ')) { editableGrid.remove({{count}});  } " style="cursor:pointer"><i class="fa fa-trash" alt="delete" title="Delete row"></i></a>&nbsp;<a onclick="editableGrid.duplicate({{count}});" style="cursor:pointer"><i class="fa fa-files-o" border="0" alt="duplicate" title="Duplicate row"></i>
 			    	</a>
-			    	</td>
-			    	{% set lastID = data[0] %}
+		    	</td>
+		    	{% set lastID = data[0] %}
 		  	</tr>
 		  	{% set count = count + 1 %}
 		  	{% endfor %}
 		</table>
 		<form action="">
-        	<input type="button" value="Add Row" onclick='editableGrid.append({{count}},{StrainID: {{lastID+1}},Genus : "empty",Species : "empty"}, 15, false );'/>
+        	<input type="button" value="Add Row" onclick='editableGrid.addRow({{count}},{StrainID: {{lastID+1}},Genus : "empty",Species : "empty"}, 15, false );'/>
    	 	</form> 
 	</body>
 	
