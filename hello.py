@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
 from flaskext.mysql import MySQL
 
-app = Flask(__name__, static_url_path='/')
+app = Flask(__name__, static_url_path='/static')
 mysql = MySQL()
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
@@ -19,8 +19,8 @@ def hello():
     cursor.execute("SELECT * from Strains")
     # return "RUNNING"
     database = cursor.fetchall()
-    print(database)
-    return render_template('db.html', database=database)
+    # print(database)
+    return render_template('editable.html', database=database)
 
 
 

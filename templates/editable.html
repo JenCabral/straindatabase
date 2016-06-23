@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>EditableGrid - Minimal demo - Attaching grid to an HTML table</title>
+		<script type=text/javascript>
+			$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+		</script>
+		<script src="{{url_for('static', filename='js/editablegrid.js')}}"></script>
+		<!-- [DO NOT DEPLOY] --> <script src="{{url_for('static', filename='js/editablegrid_renderers.js')}}" ></script>
+
+		<!-- [DO NOT DEPLOY] --> <script src="{{url_for('static', filename='js/editablegrid_editors.js')}}" ></script>
+		<!-- [DO NOT DEPLOY] --> <script src="{{url_for('static', filename='js/editablegrid_validators.js')}}" ></script>
+		<!-- [DO NOT DEPLOY] --> <script src="{{url_for('static', filename='js/editablegrid_utils.js')}}" ></script>
+		<!-- [DO NOT DEPLOY] --> <script src="{{url_for('static', filename='js/editablegrid_charts.js')}}" ></script>
+		<link rel="stylesheet" href="{{url_for('static', filename='css/editablegrid.css')}}" type="text/css" media="screen">
+
+		<link rel='stylesheet' href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css')}}">
+		<style>
+			body { font-family:'lucida grande', tahoma, verdana, arial, sans-serif; font-size:11px; }
+			h1 { font-size: 15px; }
+			a { text-decoration: none; }
+			table.testgrid th { color: #FFE798; }
+			a:hover { text-decoration: underline; }
+			table.testgrid td { white-space: nowrap; }
+			table.testgrid { border-collapse: collapse; border: 1px solid #CCB; width: 800px; }
+			table.testgrid td, table.testgrid th { padding: 5px; border: 1px solid #E0E0E0; }
+			table.testgrid th { background: #283B37; text-align: left;  }
+			input.invalid { background: red; color: #613663; }
+		</style>
+		
+		<script>
+			window.onload = function() {
+              editableGrid = new EditableGrid("DemoGridAttach", { sortIconUp: "{{ url_for('static', filename = 'img/upFA.png') }}", sortIconDown: "{{ url_for('static', filename = 'img/downFA.png') }}"}); 
+
+				// we build and load the metadata in Javascript
+				editableGrid.load({ metadata: [
+					{ name: "StrainID", datatype: "string", editable: false },
+					{ name: "Genus", datatype: "string", editable: true },
+					{ name: "Species", datatype: "string", editable: true },
+					{ name: "Subspecies", datatype: "string", editable: true },
+					{ name: "DSMZ", datatype: "string", editable: true },
+					{ name: "ATCC", datatype: "string", editable: true },
+					{ name: "NRRL", datatype: "string", editable: true },
+					{ name: "Strain", datatype: "string", editable: true },
+					{ name: "Freezer Location #1", datatype: "string", editable: true },
+					{ name: "Freezer Location #2", datatype: "string", editable: true },
+					{ name: "Freezer Location #3", datatype: "string", editable: true },
+					{ name: "Freezer Location #4", datatype: "string", editable: true },
+					{ name: "Freezer Location #5", datatype: "string", editable: true },
+					{ name: "Freezer Location #6", datatype: "string", editable: true },
+					{ name: "Action", datatype: "value", editable: false}
+				]});
+				// then we attach to the HTML table and render it
+				editableGrid.attachToHTMLTable('htmlgrid');
+				editableGrid.renderGrid();
+			} 
+		</script>
+		
+	</head>
+	
+	<body>
+		<h1>Magarvey Lab Strain Inventory</h1>
+
+		<table id="htmlgrid" class="testgrid">
+			<tr>
+				<th>StrainID</th>
+			    <th>Genus</th>
+			    <th>Species</th>
+			    <th>Subspecies</th>
+			    <th>DSMZ</th>
+			    <th>ATCC</th>
+			    <th>NRRL</th>
+			    <th>Strain</th>
+			    <th>Freezer Location #1</th>
+			    <th>Freezer Location #2</th>
+			    <th>Freezer Location #3</th>
+			    <th>Freezer Location #4</th>
+			    <th>Freezer Location #5</th>
+			    <th>Freezer Location #6</th>
+			    <th>Action</th>
+			</tr>
+			{% set count = 0 %}
+			{% set lastID = 0 %}
+			{% for data in database %}
+		  	<tr id='{{ count }}' >
+			    <td style=" text-align: center; padding-right:20px; padding-left:20px">{{data[0]}}</td>
+			    <td>{{data[1]}}</td>
+			    <td>{{data[2]}}</td>
+			    <td>{{data[7]}}</td>
+			    <td>{{data[4]}}</td>
+			    <td>{{data[5]}}</td>
+			    <td>{{data[6]}}</td>
+			    <td>{{data[3]}}</td>
+			    <td>{{data[8]}}</td>
+			    <td>{{data[9]}}</td>
+			    <td>{{data[10]}}</td>
+			    <td>{{data[11]}}</td>
+			    <td>{{data[12]}}</td>
+			    <td>{{data[13]}}</td>
+			    <td  style=" text-align: center; " class="editablegrid-action" data-title="action">
+			    	<a onclick="if (confirm('Are you sure you want to delete this person ? ')) { editableGrid.remove({{count}});  } " style="cursor:pointer"><i class="fa fa-trash" alt="delete" title="Delete row"></i></a>&nbsp;<a onclick="editableGrid.duplicate({{count}});" style="cursor:pointer"><i class="fa fa-files-o" border="0" alt="duplicate" title="Duplicate row"></i>
+			    	</a>
+			    	</td>
+			    	{% set lastID = data[0] %}
+		  	</tr>
+		  	{% set count = count + 1 %}
+		  	{% endfor %}
+		</table>
+		<form action="">
+        	<input type="button" value="Add Row" onclick='editableGrid.append({{count}},{StrainID: {{lastID+1}},Genus : "empty",Species : "empty"}, 15, false );'/>
+   	 	</form> 
+	</body>
+	
+</html>
